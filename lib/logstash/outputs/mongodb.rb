@@ -119,7 +119,8 @@ class LogStash::Outputs::Mongodb < LogStash::Outputs::Base
         # to fix the issue.
         @logger.warn("Skipping insert because of a duplicate key error", :event => event, :exception => e)
       else
-        @logger.warn("Failed to send event to MongoDB, retrying in #{@retry_delay.to_s} seconds", :event => event, :exception => e)
+        @logger.warn("Failed to send event to MongoDB, retrying in #{@retry_delay.to_s} seconds", 
+          :event => event, :exception => e, :backtrace => e.backtrace.join("\n"))
         sleep(@retry_delay)
         retry
       end
